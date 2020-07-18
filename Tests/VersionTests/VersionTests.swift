@@ -45,4 +45,40 @@ class VersionTests: XCTestCase {
         XCTAssertThrowsError(try Version(string: "x"))
         XCTAssertThrowsError(try Version(string: "x.y.z"))
     }
+
+    func testDecoding() throws {
+        let decoder = JSONDecoder()
+
+        func decode(_ string: String) throws -> [String : Version] {
+            try decoder.decode([String : Version].self, from: string.data(using: .utf8)!)
+        }
+
+        XCTAssertEqual(
+            try decode("{\"version\": \"1.2.3\"}"),
+            ["version" : Version(1, 2, 3)])
+        XCTAssertEqual(
+            try decode("{\"version\": \"1\"}"),
+            ["version" : Version(1, 0, 0)])
+        XCTAssertEqual(
+            try decode("{\"version\": \"-5\"}"),
+            ["version" : Version(5, 0, 0)])
+        XCTAssertThrowsError(try decode("{\"version\": \"hello\"}"))
+        XCTAssertThrowsError(try decode("{\"version\": \"\"}"))
+    }
+
+    func testEncoding() throws {
+        let encoder = JSONEncoder()
+
+        func encode(_ version: Version) throws -> String {
+            let data = try encoder.encode(["ver" : version])
+            return String(data: data, encoding: .utf8)!
+        }
+
+        XCTAssertEqual(
+            try encode(Version(1,2,3)),
+            "{\"ver\":\"1.2.3\"}")
+        XCTAssertEqual(
+            try encode(Version(5,0,4)),
+            "{\"ver\":\"5.0.4\"}")
+    }
 }
