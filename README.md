@@ -1,6 +1,6 @@
 # Version
 
-Swift µ-)library to represent (semantic) Versions in code, including parsing from String.
+Swift µ-library to represent (semantic) Versions in code, including parsing from String.
 
 ## Usage
 
