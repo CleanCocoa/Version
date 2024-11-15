@@ -1,6 +1,6 @@
 //  Copyright © 2018 Christian Tietze. All rights reserved. Distributed under the MIT License.
 
-public struct Version: Equatable, Comparable {
+public struct Version: Equatable, Comparable, Sendable {
     public let major: Int
     public let minor: Int
     public let patch: Int
